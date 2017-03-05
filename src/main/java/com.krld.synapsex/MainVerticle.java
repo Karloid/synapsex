@@ -15,9 +15,9 @@ public class MainVerticle extends BaseVerticle {
         super.start(startFuture);
         System.out.println("Hello World");
         MultipleFutures mf = new MultipleFutures();
-        mf.add(v -> deployVerticle(SyncVerticle.class.getName(), v));
-        mf.add(v -> deployVerticle(SyncVerticle.class.getName(), v));
-        mf.add(v -> deployVerticle(SyncVerticle.class.getName(), v));
+        for (int x = 0; x < 8; x++) {
+            mf.add(v -> deployVerticle(SyncVerticle.class.getName(), v));
+        }
         mf.setHandler(event -> {
             if (event.failed()) {
                 event.cause().printStackTrace();
@@ -26,9 +26,11 @@ public class MainVerticle extends BaseVerticle {
             }
             deployVerticle(IdGeneratorVerticle.class.getName(),
                     Future.future().setHandler(v -> {
+                        //TODO handle failed state
                         for (int x = 0; x < 8; x++) {
                             deployVerticle(WebApiVerticle.class.getName(), Future.future());
                         }
+                        vertx.eventBus().consumer(Addresses.IS_RUNNING, e -> e.reply(""));
                     })
             );
         });
