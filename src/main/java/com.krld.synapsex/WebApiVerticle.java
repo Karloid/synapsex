@@ -8,7 +8,7 @@ public class WebApiVerticle extends BaseVerticle {
     public void start(Future<Void> startFuture) throws Exception {
         super.start(startFuture);
 
-        vertx.setPeriodic(1, event -> {
+        vertx.setPeriodic(5, event -> {
             Event e = new Event();
             e.body = "Hello";
             e.type = "m.room.message";

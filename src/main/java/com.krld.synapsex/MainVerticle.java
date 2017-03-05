@@ -1,14 +1,14 @@
 package com.krld.synapsex;
 
-import com.krld.synapsex.utils.JsonUtils;
 import com.krld.synapsex.utils.MultipleFutures;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Future;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainVerticle extends BaseVerticle {
-    private List<String> deploymentIds;
+    private List<String> deploymentIds = new ArrayList<>();
 
     @Override
     public void start(Future<Void> startFuture) throws Exception {
@@ -32,6 +32,7 @@ public class MainVerticle extends BaseVerticle {
                     })
             );
         });
+        mf.start();
     }
 
     private <T> void deployVerticle(String name, Future<T> future) {
