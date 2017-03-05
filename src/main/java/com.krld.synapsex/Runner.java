@@ -1,8 +1,5 @@
 package com.krld.synapsex;
 
-import com.hazelcast.config.Config;
-import com.hazelcast.config.InterfacesConfig;
-import com.hazelcast.config.NetworkConfig;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
 import io.vertx.spi.cluster.hazelcast.HazelcastClusterManager;
@@ -17,15 +14,9 @@ public class Runner {
 
     private static void cluster() {
         VertxOptions options = new VertxOptions();
-        Config conf = new Config();
-        NetworkConfig networkConfig = new NetworkConfig();
-        InterfacesConfig interfaces = new InterfacesConfig();
-        interfaces.addInterface("192.168.0.5");
-        interfaces.setEnabled(true);
-        networkConfig.setInterfaces(interfaces);
-        conf.setNetworkConfig(networkConfig);
 
         options.setClusterManager(new HazelcastClusterManager());
+        options.setClusterHost("192.168.0.5"); //TODO extract cluster from here
         Vertx.clusteredVertx(options, event -> {
             if (event.failed()) {
                 event.cause().printStackTrace();
