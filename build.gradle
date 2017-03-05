@@ -1,0 +1,43 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '1.2.3'
+}
+
+group 'com.krld'
+version '1.0'
+
+repositories {
+    jcenter()
+}
+
+applicationDefaultJvmArgs = ["-Xms64M", "-Xmx1024M"]
+
+version = '1.0.0'
+sourceCompatibility = '1.8'
+
+dependencies {
+    compile "io.vertx:vertx-core:3.3.3"
+    compile 'com.google.code.gson:gson:2.4'
+    compile 'ru.yandex.qatools.embed:postgresql-embedded:1.20'
+    compile group: 'org.postgresql', name: 'postgresql', version: '9.4.1212'
+    compile 'io.vertx:vertx-mysql-postgresql-client:3.3.3'
+    compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.16.1'
+}
+
+run {
+    standardInput = System.in
+}
+
+mainClassName = 'com.krld.synapsex.Runner'
+
+shadowJar {
+    classifier = 'fat'
+    mergeServiceFiles {
+        include 'META-INF/services/io.vertx.core.spi.VerticleFactory'
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.8'
+}
