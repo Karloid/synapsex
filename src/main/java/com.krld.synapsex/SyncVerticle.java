@@ -25,6 +25,8 @@ public class SyncVerticle extends BaseVerticle {
 
         if (e.eventId < lastId) {
             System.err.println("Error! received event in wrong order!!");
+        } else if (lastId != 0 && lastId + 1 != e.eventId ) {
+            System.err.println("Error! detected skipped event " + e.eventId);
         } else {
             lastId = e.eventId;
         }
